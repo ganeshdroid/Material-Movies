@@ -1,11 +1,8 @@
 package com.hackvg.android.mvp.presenters;
 
-import android.content.ContentValues;
-import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.hackvg.android.mvp.views.MVPDetailView;
-import com.hackvg.android.provider.DbConstants;
 import com.hackvg.common.utils.BusProvider;
 import com.hackvg.common.utils.Constants;
 import com.hackvg.domain.GetMovieDetailUsecaseController;
@@ -16,9 +13,7 @@ import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
-/**
- * Created by saulmm on 31/01/15.
- */
+
 public class MovieDetailPresenterImpl implements MovieDetailPresenter {
 
     private final MVPDetailView movieDetailView;
@@ -71,7 +66,7 @@ public class MovieDetailPresenterImpl implements MovieDetailPresenter {
     }
 
     @Override
-    public void showName(String title) {
+    public void showTitle(String title) {
 
         movieDetailView.setName(title);
     }
@@ -81,7 +76,7 @@ public class MovieDetailPresenterImpl implements MovieDetailPresenter {
 
         String companiesString = "";
 
-        for (int i = 0; i <companies.size(); i++) {
+        for (int i = 0; i < companies.size(); i++) {
 
             Production_companies company = companies.get(i);
             companiesString += company.getName();
@@ -96,12 +91,7 @@ public class MovieDetailPresenterImpl implements MovieDetailPresenter {
     }
 
     @Override
-    public void setChecked() {
-
-    }
-
-    @Override
-    public void setPending() {
+    public void setFavorite() {
 
     }
 
@@ -110,54 +100,16 @@ public class MovieDetailPresenterImpl implements MovieDetailPresenter {
     public void onDetailInformationReceived(MovieDetailResponse response) {
 
         showDescription(response.getOverview());
-        showName(response.getTitle());
+        showTitle(response.getTitle());
         showCover(response.getPoster_path());
         showTagline(response.getTagline());
         showCompanies(response.getProduction_companies());
         showHomepage(response.getHomepage());
-        updatePendingViewed();
-    }
-
-    private void updatePendingViewed() {
-
-        String[] columns = new String[]{DbConstants.Movies.STATUS};
-        Cursor movieStatus = movieDetailView.getContext().getContentResolver()
-            .query(DbConstants.CONTENT_URI, columns,
-                DbConstants.Movies.ID_MOVIE + "=?", new String[]{movieID}, null);
-
-        if ((movieStatus != null) && (movieStatus.getCount() > 0)) {
-            movieStatus.moveToFirst();
-            int status = movieStatus.getInt(movieStatus.getColumnIndex(DbConstants.Movies.STATUS));
-
-        } else {
-
-            ContentValues values = new ContentValues();
-            values.put(DbConstants.Movies.STATUS, 0);
-            values.put(DbConstants.Movies.ID_MOVIE, Integer.parseInt(movieID));
-            movieDetailView.getContext().getContentResolver().insert(DbConstants.CONTENT_URI, values);
-        }
     }
 
     @Override
-    public void onViewedPressed() {
+    public void onFavoritePressed() {
 
-        ContentValues values = new ContentValues();
-        values.put(DbConstants.Movies.STATUS, 2);
-        movieDetailView.getContext().getContentResolver().update(DbConstants.CONTENT_URI, values,
-            DbConstants.Movies.ID_MOVIE + "=?", new String[]{movieID});
-
-        movieDetailView.finish("Viewed");
-    }
-
-    @Override
-    public void onPendingPressed() {
-
-        ContentValues values = new ContentValues();
-        values.put(DbConstants.Movies.STATUS, 1);
-        movieDetailView.getContext().getContentResolver().update(DbConstants.CONTENT_URI, values,
-            DbConstants.Movies.ID_MOVIE + "=?", new String[]{movieID});
-
-        movieDetailView.finish("Pending");
     }
 
     @Override
@@ -165,5 +117,15 @@ public class MovieDetailPresenterImpl implements MovieDetailPresenter {
 
         if (!TextUtils.isEmpty(homepage))
             movieDetailView.setHomepage(homepage);
+    }
+
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void stop() {
+
     }
 }

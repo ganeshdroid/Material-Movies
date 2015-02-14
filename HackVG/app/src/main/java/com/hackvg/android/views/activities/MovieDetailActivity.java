@@ -75,6 +75,7 @@ public class MovieDetailActivity extends Activity implements MVPDetailView,
     private Drawable fabRipple;
 
     private int coverImageHeight;
+    private boolean showFab;
 
 
     @Override
@@ -183,6 +184,12 @@ public class MovieDetailActivity extends Activity implements MVPDetailView,
             }
 
         }, milliseconds);
+    }
+
+    @Override
+    public void showFabButton() {
+
+        showFab = true;
     }
 
     @Override
@@ -301,8 +308,8 @@ public class MovieDetailActivity extends Activity implements MVPDetailView,
         @Override
         public void onTransitionEnd(Transition transition) {
 
-            super.onTransitionEnd(transition);
-            GUIUtils.showViewByScale(fabButton);
+        super.onTransitionEnd(transition);
+        GUIUtils.showViewByScale(fabButton);
         }
     };
 }

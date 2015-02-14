@@ -25,4 +25,6 @@ public interface MVPDetailView extends MVPView {
     public void animateConfirmationView ();
 
     public void startClosingConfirmationView();
+
+    void showFabButton();
 }
