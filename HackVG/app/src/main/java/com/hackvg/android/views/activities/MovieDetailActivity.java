@@ -79,13 +79,6 @@ public class MovieDetailActivity extends Activity implements MVPDetailView,
 
 
     @Override
-    protected void onResume() {
-
-        super.onResume();
-        detailPresenter.onResume();
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -105,14 +98,20 @@ public class MovieDetailActivity extends Activity implements MVPDetailView,
         observableScrollView.setScrollViewListener(this);
 
         detailPresenter = new MovieDetailPresenterImpl(this, movieID);
-        detailPresenter.onCreate();
     }
 
     @Override
     protected void onStop() {
 
         super.onStop();
-        detailPresenter.onStop();
+        detailPresenter.stop();
+    }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+        detailPresenter.stop();
     }
 
     @Override

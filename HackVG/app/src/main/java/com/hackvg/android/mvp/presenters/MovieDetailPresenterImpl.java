@@ -16,59 +16,54 @@ import java.util.List;
 
 public class MovieDetailPresenterImpl implements MovieDetailPresenter {
 
-    private final MVPDetailView movieDetailView;
-    private final String movieID;
+    private final MVPDetailView mMovieDetailView;
+    private final String mMovieID;
 
 
     public MovieDetailPresenterImpl(MVPDetailView movieDetailView, String movieID) {
 
-        this.movieDetailView = movieDetailView;
-        this.movieID = movieID;
+        mMovieDetailView = movieDetailView;
+        mMovieID = movieID;
     }
 
     @Override
     public void showDescription(String description) {
 
-        movieDetailView.setDescription(description);
+        mMovieDetailView.setDescription(description);
     }
 
     @Override
     public void showCover(String url) {
 
         String coverUrl = Constants.POSTER_PREFIX + url;
-        movieDetailView.setImage(coverUrl);
+        mMovieDetailView.setImage(coverUrl);
     }
 
     @Override
-    public void onResume() {
+    public void start() {
 
-        Usecase getDetailUsecase = new GetMovieDetailUsecaseController(movieID);
+        BusProvider.getUIBusInstance().register(this);
+
+        Usecase getDetailUsecase = new GetMovieDetailUsecaseController(mMovieID);
         getDetailUsecase.execute();
     }
 
     @Override
-    public void onCreate() {
-
-        BusProvider.getUIBusInstance().register(this);
-    }
-
-    @Override
-    public void onStop() {
+    public void stop() {
 
         BusProvider.getUIBusInstance().unregister(this);
-
     }
 
     @Override
     public void showTagline(String tagLine) {
 
-        movieDetailView.setTagline(tagLine);
+        mMovieDetailView.setTagline(tagLine);
     }
 
     @Override
     public void showTitle(String title) {
 
-        movieDetailView.setName(title);
+        mMovieDetailView.setName(title);
     }
 
     @Override
@@ -86,13 +81,7 @@ public class MovieDetailPresenterImpl implements MovieDetailPresenter {
         }
 
         if (!companies.isEmpty())
-            movieDetailView.setCompanies(companiesString);
-
-    }
-
-    @Override
-    public void setFavorite() {
-
+            mMovieDetailView.setCompanies(companiesString);
     }
 
     @Subscribe
@@ -108,24 +97,12 @@ public class MovieDetailPresenterImpl implements MovieDetailPresenter {
     }
 
     @Override
-    public void onFavoritePressed() {
-
-    }
+    public void onFavoritePressed() {}
 
     @Override
     public void showHomepage(String homepage) {
 
         if (!TextUtils.isEmpty(homepage))
-            movieDetailView.setHomepage(homepage);
-    }
-
-    @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void stop() {
-
+            mMovieDetailView.setHomepage(homepage);
     }
 }

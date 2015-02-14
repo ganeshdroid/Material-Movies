@@ -28,10 +28,6 @@ public interface MovieDetailPresenter extends Presenter  {
      */
     public void showCover (String url);
 
-    public void onCreate ();
-
-    public void onStop ();
-
     /**
      * Shows the tagline on the View
      * @param tagLine of the film
