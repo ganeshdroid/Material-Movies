@@ -35,7 +35,7 @@ public class MovieDetailPresenterImpl implements MovieDetailPresenter {
     @Override
     public void showCover(String url) {
 
-        String coverUrl = Constants.POSTER_PREFIX + url;
+        String coverUrl = Constants.BASIC_STATIC_URL + url;
         mMovieDetailView.setImage(coverUrl);
     }
 

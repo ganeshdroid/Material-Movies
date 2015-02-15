@@ -17,12 +17,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toolbar;
 
+import com.hackvg.android.mvp.presenters.PopularMoviesPresenterImpl;
 import com.hackvg.android.utils.HackVGClickListener;
 import com.hackvg.android.R;
 import com.hackvg.android.views.adapters.MoviesAdapter;
 import com.hackvg.android.views.fragments.NavigationDrawerFragment;
 import com.hackvg.android.mvp.views.MVPPopularMoviesView;
-import com.hackvg.android.mvp.presenters.PopularShowsPresenterImpl;
 import com.hackvg.android.utils.RecyclerInsetsDecoration;
 import com.hackvg.model.entities.TvMovie;
 
@@ -44,7 +44,7 @@ public class MoviesActivity extends ActionBarActivity implements
     private MoviesAdapter moviesAdapter;
     public static SparseArray<Bitmap> photoCache = new SparseArray<Bitmap>(1);
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    private PopularShowsPresenterImpl popularShowsPresenter;
+    private PopularMoviesPresenterImpl popularShowsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class MoviesActivity extends ActionBarActivity implements
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
             (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        popularShowsPresenter = new PopularShowsPresenterImpl(this);
+        popularShowsPresenter = new PopularMoviesPresenterImpl(this);
         popularShowsPresenter.onCreate();
     }
 
