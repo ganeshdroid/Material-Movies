@@ -17,12 +17,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toolbar;
 
-import com.hackvg.android.mvp.presenters.PopularMoviesPresenterImpl;
+import com.hackvg.android.mvp.presenters.MoviesPresenter;
+import com.hackvg.android.mvp.views.MoviesView;
 import com.hackvg.android.utils.HackVGClickListener;
 import com.hackvg.android.R;
 import com.hackvg.android.views.adapters.MoviesAdapter;
 import com.hackvg.android.views.fragments.NavigationDrawerFragment;
-import com.hackvg.android.mvp.views.MVPPopularMoviesView;
 import com.hackvg.android.utils.RecyclerInsetsDecoration;
 import com.hackvg.model.entities.TvMovie;
 
@@ -33,7 +33,7 @@ import butterknife.InjectView;
 
 
 public class MoviesActivity extends ActionBarActivity implements
-    MVPPopularMoviesView, HackVGClickListener, View.OnClickListener {
+    MoviesView, HackVGClickListener, View.OnClickListener {
 
     private static final int COLUMNS = 2;
 
@@ -44,7 +44,7 @@ public class MoviesActivity extends ActionBarActivity implements
     private MoviesAdapter moviesAdapter;
     public static SparseArray<Bitmap> photoCache = new SparseArray<Bitmap>(1);
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    private PopularMoviesPresenterImpl popularShowsPresenter;
+    private MoviesPresenter popularShowsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,15 +73,15 @@ public class MoviesActivity extends ActionBarActivity implements
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
             (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        popularShowsPresenter = new PopularMoviesPresenterImpl(this);
-        popularShowsPresenter.onCreate();
+        popularShowsPresenter = new MoviesPresenter(this);
+        popularShowsPresenter.start();
     }
 
     @Override
     protected void onStop() {
 
         super.onStop();
-        popularShowsPresenter.onStop();
+        popularShowsPresenter.stop();
     }
 
     @Override
