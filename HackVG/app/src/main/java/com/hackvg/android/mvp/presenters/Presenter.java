@@ -6,18 +6,18 @@ package com.hackvg.android.mvp.presenters;
 
 /**
  * Interface that represents a Presenter in the model view presenter Pattern
+ * defines methods to manage the Activity / Fragment lifecycle
  */
-public interface Presenter {
+public abstract class Presenter {
 
     /**
-     * Method controlled by the lifecycle of the view that is implemented by
-     * an Activity or Fragment
+     * Called when the presenter is initialized
      */
-    public void start ();
+    public abstract void start ();
 
     /**
-     * Method controlled by the lifecycle of the view that is implemented by
-     * an Activity or Fragment
+     * Called when the presenter is stop, i.e when an activity
+     * or a fragment finishes
      */
-    public void stop ();
+    public abstract void stop ();
 }
