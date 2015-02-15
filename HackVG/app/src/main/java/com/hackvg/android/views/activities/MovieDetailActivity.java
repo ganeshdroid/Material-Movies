@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.hackvg.android.R;
 import com.hackvg.android.mvp.presenters.MovieDetailPresenter;
-import com.hackvg.android.mvp.presenters.MovieDetailPresenterImpl;
 import com.hackvg.android.mvp.views.MVPDetailView;
 import com.hackvg.android.utils.GUIUtils;
 import com.hackvg.android.utils.HackVGTransitionListener;
@@ -91,7 +90,7 @@ public class MovieDetailActivity extends Activity implements MVPDetailView,
 
         observableScrollView.setScrollViewListener(this);
 
-        detailPresenter = new MovieDetailPresenterImpl(this, movieID);
+        detailPresenter = new MovieDetailPresenter(this, movieID);
     }
 
     @Override
