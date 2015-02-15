@@ -35,9 +35,6 @@ import butterknife.InjectView;
 import butterknife.InjectViews;
 import butterknife.OnClick;
 
-/**
- * Created by saulmm on 31/01/15.
- */
 public class MovieDetailActivity extends Activity implements MVPDetailView,
     Palette.PaletteAsyncListener, ScrollViewListener {
 
@@ -61,7 +58,7 @@ public class MovieDetailActivity extends Activity implements MVPDetailView,
     @InjectView(R.id.activity_detail_confirmation_image)     ImageView confirmationView;
     @InjectView(R.id.activity_detail_confirmation_container) FrameLayout confirmationContainer;
 
-    @InjectView(R.id.activity_movie_detail_scroll)                  ObservableScrollView observableScrollView;
+    @InjectView(R.id.activity_movie_detail_scroll)           ObservableScrollView observableScrollView;
 
     private final int TITLE         = 0;
     private final int DESCRIPTION   = 1;
@@ -225,18 +222,22 @@ public class MovieDetailActivity extends Activity implements MVPDetailView,
 
                 fabRipple.setColorFilter(lightSwatch.getRgb(), PorterDuff.Mode.ADD);
                 confirmationContainer.setBackgroundColor(lightSwatch.getRgb());
-            }
 
-            if (lightSwatch == null && vibrantSwatch != null) {
-                colorBrightElements(vibrantSwatch);
+            } else {
 
                 int primaryColor = getResources()
                     .getColor(R.color.theme_primary);
 
-                fabRipple.setColorFilter(primaryColor, PorterDuff.Mode.ADD);
+                int accentColor = getResources()
+                    .getColor(R.color.theme_accent);
+
+                fabRipple.setColorFilter(accentColor, PorterDuff.Mode.ADD);
                 confirmationView.setBackgroundColor(primaryColor);
                 overviewContainer.setBackgroundColor(primaryColor);
             }
+
+            if (lightSwatch == null && vibrantSwatch != null)
+                colorBrightElements(vibrantSwatch);
 
             if (darkVibrantSwatch != null && lightSwatch != null)
                 colorBrightElements(darkVibrantSwatch);
