@@ -32,4 +32,8 @@ public interface MovieDatabaseAPI {
         Callback<MovieDetailResponse> callback
     );
 
+    @GET("/configuration")
+    void getConfiguration (
+        @Query("api_key") String apiKey
+    );
 }
