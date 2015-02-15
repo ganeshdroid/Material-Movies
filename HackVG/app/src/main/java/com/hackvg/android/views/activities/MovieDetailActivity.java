@@ -42,24 +42,24 @@ public class MovieDetailActivity extends Activity implements MVPDetailView,
     Palette.PaletteAsyncListener, ScrollViewListener {
 
     @InjectViews({
-        R.id.activity_movie_detail_title,
-        R.id.activity_movie_detail_content,
-        R.id.activity_detail_homepage_value,
-        R.id.activity_detail_company_value,
-        R.id.activity_detail_tagline_value,
-        R.id.activity_movie_detail_confirmation_text,
+        R.id.activity_detail_title,
+        R.id.activity_detail_content,
+        R.id.activity_detail_homepage,
+        R.id.activity_detail_company,
+        R.id.activity_detail_tagline,
+        R.id.activity_detail_confirmation_text,
     }) List<TextView> movieInfoTextViews;
 
     @InjectViews({
         R.id.activity_detail_header_tagline,
-        R.id.activity_detail_movie_header_description
+        R.id.activity_detail_header_description
     }) List<TextView> headers;
 
-    @InjectView(R.id.activity_detail_book_info)                     View overviewContainer;
-    @InjectView(R.id.activity_movie_detail_fab)                     ImageView fabButton;
-    @InjectView(R .id.activity_movie_detail_cover_wtf)              ImageView coverImageView;
-    @InjectView(R.id.activity_movide_detail_confirmation_image)     ImageView confirmationView;
-    @InjectView(R.id.activity_movie_detai_confirmation_container)   FrameLayout confirmationContainer;
+    @InjectView(R.id.activity_detail_book_info)              View overviewContainer;
+    @InjectView(R.id.activity_detail_fab)                    ImageView fabButton;
+    @InjectView(R.id.activity_detail_cover)                  ImageView coverImageView;
+    @InjectView(R.id.activity_detail_confirmation_image)     ImageView confirmationView;
+    @InjectView(R.id.activity_detail_confirmation_container) FrameLayout confirmationContainer;
 
     @InjectView(R.id.activity_movie_detail_scroll)                  ObservableScrollView observableScrollView;
 
@@ -73,9 +73,6 @@ public class MovieDetailActivity extends Activity implements MVPDetailView,
     private MovieDetailPresenter detailPresenter;
     private Palette.Swatch mBrightSwatch;
     private Drawable fabRipple;
-
-    private int coverImageHeight;
-    private boolean showFab;
 
 
     @Override
@@ -111,7 +108,7 @@ public class MovieDetailActivity extends Activity implements MVPDetailView,
     protected void onStart() {
 
         super.onStart();
-        detailPresenter.stop();
+        detailPresenter.start();
     }
 
     @Override
@@ -188,7 +185,7 @@ public class MovieDetailActivity extends Activity implements MVPDetailView,
     @Override
     public void showFabButton() {
 
-        showFab = true;
+        boolean showFab = true;
     }
 
     @Override
@@ -273,7 +270,7 @@ public class MovieDetailActivity extends Activity implements MVPDetailView,
         }
     }
 
-    @OnClick(R.id.activity_movie_detail_fab)
+    @OnClick(R.id.activity_detail_fab)
     public void onClick() {
 
         showConfirmationView();
@@ -298,6 +295,7 @@ public class MovieDetailActivity extends Activity implements MVPDetailView,
         if (y < coverImageView.getHeight() && isTranslucent) {
 
             GUIUtils.makeTheStatusbarTranslucent(this);
+            movieInfoTextViews.get(TITLE).setTranslationY(0);
             isTranslucent = false;
         }
     }
