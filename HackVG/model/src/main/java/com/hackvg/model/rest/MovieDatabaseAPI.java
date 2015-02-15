@@ -9,7 +9,10 @@ import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
-
+/**
+ * Interface representing the MovieDatabaseAPI endpoints
+ * used by retrofit
+ */
 public interface MovieDatabaseAPI {
 
     @GET("/tv/popular")
