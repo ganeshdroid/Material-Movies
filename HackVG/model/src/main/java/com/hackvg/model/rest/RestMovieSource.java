@@ -1,12 +1,11 @@
 package com.hackvg.model.rest;
 
 
-import com.hackvg.model.MediaDataSource;
-import com.hackvg.model.entities.ApiResponse;
-import com.hackvg.model.entities.MovieDetailResponse;
-import com.hackvg.model.entities.PopularMoviesApiResponse;
 import com.hackvg.common.utils.BusProvider;
 import com.hackvg.common.utils.Constants;
+import com.hackvg.model.MediaDataSource;
+import com.hackvg.model.entities.MovieDetailResponse;
+import com.hackvg.model.entities.PopularMoviesApiResponse;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -28,7 +27,6 @@ public class RestMovieSource implements MediaDataSource {
             .build();
 
         moviesDBApi = parkappRest.create(MovieDatabaseAPI.class);
-
     }
 
     public static RestMovieSource getInstance() {
@@ -46,62 +44,41 @@ public class RestMovieSource implements MediaDataSource {
     }
 
 
-
     @Override
     public void getMovies() {
 
-        moviesDBApi.getPopularMovies(Constants.API_KEY, moviesResponseCallback);
+        moviesDBApi.getPopularMovies(Constants.API_KEY, retrofitCallback);
     }
+
+    public Callback retrofitCallback = new Callback() {
+        @Override
+        public void success(Object o, Response response) {
+
+
+            if (o instanceof MovieDetailResponse) {
+
+                MovieDetailResponse detailResponse = (MovieDetailResponse) o;
+                BusProvider.getRestBusInstance().post(detailResponse);
+
+            } else if (o instanceof PopularMoviesApiResponse) {
+
+                PopularMoviesApiResponse moviesApiResponse = (PopularMoviesApiResponse) o;
+
+                BusProvider.getRestBusInstance().post(
+                    moviesApiResponse);
+            }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+
+            System.out.printf("[DEBUG] RestMovieSource failure - "+error.getMessage());
+        }
+    };
 
     @Override
     public void getDetailMovie(String id) {
 
-        moviesDBApi.getMovieDetail(Constants.API_KEY, id, new Callback<MovieDetailResponse>() {
-            @Override
-            public void success(MovieDetailResponse movieDetailResponse, Response response) {
-
-                BusProvider.getRestBusInstance().post(movieDetailResponse);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-                System.out.println("[ERROR] " + error.getMessage());
-            }
-        });
+        moviesDBApi.getMovieDetail(Constants.API_KEY, id, retrofitCallback);
     }
-
-    Callback<ApiResponse> responseCallback = new Callback<ApiResponse>() {
-        @Override
-        public void success(ApiResponse response, Response response2) {
-
-            if (response instanceof PopularMoviesApiResponse) {
-
-                BusProvider.getRestBusInstance().post(
-                    (PopularMoviesApiResponse) response);
-            }
-        }
-
-        @Override
-        public void failure(RetrofitError error) {
-
-            System.out.println("[ERROR] "+error.getMessage());
-        }
-    };
-
-
-    Callback<PopularMoviesApiResponse> moviesResponseCallback = new Callback<PopularMoviesApiResponse>() {
-        @Override
-        public void success(PopularMoviesApiResponse popularMoviesResponse, Response response) {
-
-            BusProvider.getRestBusInstance().post(popularMoviesResponse);
-        }
-
-        @Override
-        public void failure(RetrofitError error) {
-
-            System.out.println("[ERROR] "+error.getMessage());
-        }
-    };
-
 }
