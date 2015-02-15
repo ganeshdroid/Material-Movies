@@ -1,5 +1,6 @@
 package com.hackvg.model.rest;
 
+import com.hackvg.model.entities.ConfigurationResponse;
 import com.hackvg.model.entities.MovieDetailResponse;
 import com.hackvg.model.entities.PopularMoviesApiResponse;
 import com.hackvg.model.entities.PopularShowsApiResponse;
@@ -34,6 +35,7 @@ public interface MovieDatabaseAPI {
 
     @GET("/configuration")
     void getConfiguration (
-        @Query("api_key") String apiKey
+        @Query("api_key") String apiKey,
+        Callback<ConfigurationResponse> response
     );
 }

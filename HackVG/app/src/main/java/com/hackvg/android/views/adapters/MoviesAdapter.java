@@ -57,7 +57,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder> {
         holder.titleTextView.setText(selectedMovie.getTitle());
         holder.coverImageView.setTransitionName("cover" + position);
 
-        String posterURL = Constants.POSTER_PREFIX + selectedMovie.getPoster_path();
+        String posterURL = Constants.BASIC_STATIC_URL + selectedMovie.getPoster_path();
 
         Picasso.with(context)
             .load(posterURL)
