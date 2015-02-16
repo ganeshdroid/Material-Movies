@@ -47,14 +47,15 @@ public class MoviesActivity extends ActionBarActivity implements
      */
     public static SparseArray<Bitmap> sPhotoCache = new SparseArray<Bitmap>(1);
 
-    @InjectView(R.id.activity_main_toolbar)     Toolbar mToolbar;
-    @InjectView(R.id.activity_main_progress)    ProgressBar mProgressBar;
-
-    @InjectView(R.id.recycler_popular_movies)   RecyclerView mRecycler;
     private MoviesAdapter mMoviesAdapter;
     private MoviesPresenter mMoviesPresenter;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
+
+    @InjectView(R.id.activity_main_toolbar)     Toolbar mToolbar;
+    @InjectView(R.id.activity_main_progress)    ProgressBar mProgressBar;
+    @InjectView(R.id.recycler_popular_movies)   RecyclerView mRecycler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -2,7 +2,7 @@ package com.hackvg.android.mvp.presenters;
 
 import android.text.TextUtils;
 
-import com.hackvg.android.mvp.views.MVPDetailView;
+import com.hackvg.android.mvp.views.DetailView;
 import com.hackvg.common.utils.BusProvider;
 import com.hackvg.common.utils.Constants;
 import com.hackvg.domain.GetMovieDetailUsecaseController;
@@ -16,10 +16,10 @@ import java.util.List;
 
 public class MovieDetailPresenter extends Presenter {
 
-    private final MVPDetailView mMovieDetailView;
+    private final DetailView mMovieDetailView;
     private final String mMovieID;
 
-    public MovieDetailPresenter(MVPDetailView movieDetailView, String movieID) {
+    public MovieDetailPresenter(DetailView movieDetailView, String movieID) {
 
         mMovieDetailView = movieDetailView;
         mMovieID = movieID;
