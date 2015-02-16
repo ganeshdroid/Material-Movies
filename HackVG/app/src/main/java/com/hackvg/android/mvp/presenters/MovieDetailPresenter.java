@@ -1,69 +1,97 @@
-
-/**
- * @author Saul M.
- */
 package com.hackvg.android.mvp.presenters;
 
+import android.text.TextUtils;
+
+import com.hackvg.android.mvp.views.MVPDetailView;
+import com.hackvg.common.utils.BusProvider;
+import com.hackvg.common.utils.Constants;
+import com.hackvg.domain.GetMovieDetailUsecaseController;
+import com.hackvg.domain.Usecase;
 import com.hackvg.model.entities.MovieDetailResponse;
 import com.hackvg.model.entities.Production_companies;
+import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
-/**
- * {@link Presenter} that controls communication between the MovieDetail of the presentation
- * layer and the Usecases in the domain layer
- */
-@SuppressWarnings("UnusedDeclaration")
-public interface MovieDetailPresenter extends Presenter  {
 
-    /**
-     * Shows the description on the View
-     * @param description of the film
-     */
-    public void showDescription (String description);
+public class MovieDetailPresenter extends Presenter {
 
-    /**
-     * Shows an image on the view
-     * @param url resource of the image
-     */
-    public void showCover (String url);
+    private final MVPDetailView mMovieDetailView;
+    private final String mMovieID;
 
-    /**
-     * Shows the tagline on the View
-     * @param tagLine of the film
-     */
-    public void showTagline (String tagLine);
+    public MovieDetailPresenter(MVPDetailView movieDetailView, String movieID) {
 
-    /**
-     * Shows the title on the View
-     * @param title of the film
-     */
-    public void showTitle(String title);
+        mMovieDetailView = movieDetailView;
+        mMovieID = movieID;
+    }
 
-    /**
-     * Show the production companies on te View
-     * @param companies a list with all companies that participate in the production
-     * of the film
-     */
-    public void showCompanies (List<Production_companies> companies);
+    public void showDescription(String description) {
 
-    /**
-     * Called by {@link com.hackvg.domain.GetMovieDetailUsecaseController} when the
-     * detail information is fetched from the data source
-     *
-     * @param response a container including the data of the film
-     */
-    public void onDetailInformationReceived (MovieDetailResponse response);
+        mMovieDetailView.setDescription(description);
+    }
 
-    /**
-     * Sets the film as favorite, fired from the View
-     */
-    public void onFavoritePressed ();
+    public void showCover(String url) {
 
-    /**
-     * Sets the homepage on the View
-     *
-     * @param homepage the main webpage of the film
-     */
-    public void showHomepage (String homepage);
+        String coverUrl = Constants.BASIC_STATIC_URL + url;
+        mMovieDetailView.setImage(coverUrl);
+    }
+
+    @Override
+    public void start() {
+
+        BusProvider.getUIBusInstance().register(this);
+
+        Usecase getDetailUsecase = new GetMovieDetailUsecaseController(mMovieID);
+        getDetailUsecase.execute();
+    }
+
+    @Override
+    public void stop() {
+
+        BusProvider.getUIBusInstance().unregister(this);
+    }
+
+    public void showTagline(String tagLine) {
+
+        mMovieDetailView.setTagline(tagLine);
+    }
+
+    public void showTitle(String title) {
+
+        mMovieDetailView.setName(title);
+    }
+
+    public void showCompanies(List<Production_companies> companies) {
+
+        String companiesString = "";
+
+        for (int i = 0; i < companies.size(); i++) {
+
+            Production_companies company = companies.get(i);
+            companiesString += company.getName();
+
+            if (i != companies.size() -1)
+                companiesString += ", ";
+        }
+
+        if (!companies.isEmpty())
+            mMovieDetailView.setCompanies(companiesString);
+    }
+
+    @Subscribe
+    public void onDetailInformationReceived(MovieDetailResponse response) {
+
+        showDescription(response.getOverview());
+        showTitle(response.getTitle());
+        showCover(response.getPoster_path());
+        showTagline(response.getTagline());
+        showCompanies(response.getProduction_companies());
+        showHomepage(response.getHomepage());
+    }
+
+    public void showHomepage(String homepage) {
+
+        if (!TextUtils.isEmpty(homepage))
+            mMovieDetailView.setHomepage(homepage);
+    }
 }
