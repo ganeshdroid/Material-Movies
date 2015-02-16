@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hackvg.android.R;
+import com.hackvg.android.utils.RecyclerViewClickListener;
 import com.hackvg.model.entities.TvMovie;
 import com.hackvg.common.utils.Constants;
-import com.hackvg.android.utils.HackVGClickListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder> {
 
     private final List<TvMovie> movieList;
-    public HackVGClickListener hackVGClickListener;
+    public RecyclerViewClickListener recyclerViewClickListener;
     private Context context;
 
     public MoviesAdapter(List<TvMovie> movieList) {
@@ -33,8 +33,8 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder> {
         return movieList;
     }
 
-    public void setHackVGClickListener(HackVGClickListener hackVGClickListener) {
-        this.hackVGClickListener = hackVGClickListener;
+    public void setRecyclerViewClickListener(RecyclerViewClickListener recyclerViewClickListener) {
+        this.recyclerViewClickListener = recyclerViewClickListener;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder> {
 
         this.context = viewGroup.getContext();
 
-        return new MovieViewHolder(rowView, hackVGClickListener);
+        return new MovieViewHolder(rowView, recyclerViewClickListener);
 
     }
 
@@ -73,12 +73,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MovieViewHolder> {
 
 class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-    private final HackVGClickListener onClickListener;
+    private final RecyclerViewClickListener onClickListener;
     TextView titleTextView;
     TextView authorTextView;
     ImageView coverImageView;
 
-    public MovieViewHolder(View itemView, HackVGClickListener onClickListener) {
+    public MovieViewHolder(View itemView, RecyclerViewClickListener onClickListener) {
 
         super(itemView);
 

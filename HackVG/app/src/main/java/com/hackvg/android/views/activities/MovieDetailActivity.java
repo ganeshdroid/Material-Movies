@@ -110,7 +110,7 @@ public class MovieDetailActivity extends Activity implements MVPDetailView,
     @Override
     public void setImage(String url) {
 
-        Bitmap bookCoverBitmap = MoviesActivity.photoCache.get(0);
+        Bitmap bookCoverBitmap = MoviesActivity.sPhotoCache.get(0);
         coverImageView.setBackground(new BitmapDrawable(getResources(), bookCoverBitmap));
 
         Palette.generateAsync(bookCoverBitmap, this);
