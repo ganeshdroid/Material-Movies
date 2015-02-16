@@ -13,18 +13,18 @@ import com.squareup.otto.Subscribe;
 
 public class MoviesPresenter extends Presenter {
 
-    private final MoviesView MoviesView;
+    private final MoviesView mMoviesView;
 
-    public MoviesPresenter(MoviesView MoviesView) {
+    public MoviesPresenter(MoviesView mMoviesView) {
 
-        this.MoviesView = MoviesView;
+        this.mMoviesView = mMoviesView;
     }
 
     @Subscribe
     public void onPopularMoviesReceived(PopularMoviesApiResponse popularMovies) {
 
-        MoviesView.hideLoading();
-        MoviesView.showMovies(popularMovies.getResults());
+        mMoviesView.hideLoading();
+        mMoviesView.showMovies(popularMovies.getResults());
     }
 
     @Subscribe
@@ -41,7 +41,7 @@ public class MoviesPresenter extends Presenter {
 
         BusProvider.getUIBusInstance().register(this);
 
-        MoviesView.showLoading();
+        mMoviesView.showLoading();
 
         Usecase configureUsecase = new ConfigurationUsecaseController();
         configureUsecase.execute();
